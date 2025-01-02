@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Options</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f5f5;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: #fff;
+    }
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 20px;
+      justify-content: center;
+    }
+    .item {
+      width: 200px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .item img {
+      width: 100%;
+      display: block;
+      cursor: pointer;
+    }
+    .item:hover {
+      transform: scale(1.05);
+    }
+    .info {
+      padding: 10px;
+      text-align: center;
+    }
+
+    /* Модальное окно */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      overflow: auto;
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 80%;
+      max-height: 80%;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 35px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Print Options</h1>
+    <p>Click on an image to enlarge it!</p>
+  </header>
+  <div class="gallery" id="gallery"></div>
+
+  <!-- Модальное окно для увеличенного изображения -->
+  <div id="myModal" class="modal">
+    <span class="close" id="closeModal">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <script>
+    // Массив с прямыми ссылками на изображения с Imgur (сжатые версии)
+    const images = [
+      { 
+        src: "https://i.imgur.com/qsGdCcj.jpeg?auto=compress&cs=tinysrgb&h=400",  // Прямая ссылка на изображение с сжатием
+        title: "Image 1" 
+      },
+      { 
+        src: "https://i.imgur.com/vyj14ez.jpeg?auto=compress&cs=tinysrgb&h=400", 
+        title: "Image 2" 
+      },
+      { 
+        src: "https://i.imgur.com/QG7BkN9.jpeg?auto=compress&cs=tinysrgb&h=400", 
+        title: "Image 3" 
+      },
+      { 
+        src: "https://i.imgur.com/LAC7NXe.jpeg?auto=compress&cs=tinysrgb&h=400", 
+        title: "Image 4" 
+      }
+    ];
+
+    // Добавляем изображения в галерею
+    const gallery = document.getElementById('gallery');
+    images.forEach((image, index) => {
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.innerHTML = `
+        <img src="${image.src}" alt="${image.title}" class="image">
+        <div class="info">
+          <p>${image.title}</p>
+        </div>
+      `;
+      gallery.appendChild(item);
+    });
+
+    // Модальное окно
+    const modal = document.getElementById("myModal");
+    const modalImage = document.getElementById("modalImage");
+    const closeModal = document.getElementById("closeModal");
+
+    // Открыть модальное окно при клике на изображение
+    gallery.addEventListener("click", function(event) {
+      if (event.target && event.target.tagName === "IMG") {
+        modal.style.display = "block";
+        modalImage.src = event.target.src;
+      }
+    });
+
+    // Закрыть модальное окно при нажатии на крестик
+    closeModal.addEventListener("click", function() {
+      modal.style.display = "none";
+    });
+
+    // Закрыть модальное окно при клике в любом месте модального окна
+    window.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>
